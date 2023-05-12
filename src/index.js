@@ -42,7 +42,7 @@ function getCountries(countries) {
           }
         );
       } else if (countries.length >= 2 && countries.length <= 10) {
-        renderList(countries);
+        renderCountriesList(countries);
       } else {
         renderCountryInfo(countries);
       }
@@ -55,7 +55,7 @@ function getCountries(countries) {
     });
 }
 
-function renderList(countries) {
+function renderCountriesList(countries) {
   clear(refs.countryInfo);
 
   const markup = countries
