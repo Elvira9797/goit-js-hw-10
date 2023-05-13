@@ -1,7 +1,7 @@
-import './css/styles.css';
-import { fetchCountries } from './fetchCountries.js';
 import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
+import { fetchCountries } from './fetchCountries.js';
+import './css/styles.css';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -19,22 +19,20 @@ refs.searchBox.addEventListener(
 function findCountries(event) {
   const countryName = event.target.value.trim();
 
-  if (countryName === '') {
-    clear(refs.countryList);
-    clear(refs.countryInfo);
+  clear(refs.countryList);
+  clear(refs.countryInfo);
 
+  if (countryName === '') {
     return;
-  } else {
-    getCountries(fetchCountries(countryName));
   }
+
+  getCountries(fetchCountries(countryName));
 }
 
 function getCountries(countries) {
   countries
     .then(countries => {
       if (countries.length > 10) {
-        clear(refs.countryList);
-        clear(refs.countryInfo);
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.',
           {
@@ -47,8 +45,8 @@ function getCountries(countries) {
         renderCountryInfo(countries);
       }
     })
-    .catch(() => {
-      clear(refs.countryInfo);
+    .catch(error => {
+      console.log(error);
       Notiflix.Notify.failure('Oops, there is no country with that name', {
         timeout: 2000,
       });
@@ -56,8 +54,6 @@ function getCountries(countries) {
 }
 
 function renderCountriesList(countries) {
-  clear(refs.countryInfo);
-
   const markup = countries
     .map(({ flags: { svg }, name: { official } }) => {
       return `<li class="country-list-item">
@@ -71,8 +67,6 @@ function renderCountriesList(countries) {
 }
 
 function renderCountryInfo(countries) {
-  clear(refs.countryList);
-
   const {
     name: { official },
     flags: { svg },
